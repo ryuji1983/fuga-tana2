@@ -391,6 +391,11 @@ var __Html5QrcodeLibrary__;(()=>{var t={449:function(t,e,r){!function(t){"use st
     var jan=normJan(raw);
     if(!jan){toast("読み取れませんでした");return;}
     if(busy)return;
+    if(Object.keys(master).length===0){
+      toast("先に商品マスタを読み込んでください");
+      var mp=$("masterPanel"); if(mp){mp.open=true;mp.scrollIntoView({behavior:"smooth",block:"center"});}
+      return;
+    }
     var rec=master[jan];
     document.getElementById("reader").classList.add("flash");
     setTimeout(function(){document.getElementById("reader").classList.remove("flash");},400);
@@ -514,6 +519,7 @@ var __Html5QrcodeLibrary__;(()=>{var t={449:function(t,e,r){!function(t){"use st
     // entry modal
     $("entrySave").addEventListener("click",commitEntry);
     $("entryCancel").addEventListener("click",function(){closeModal("entry");if(pending)cooldown(pending.jan);pending=null;});
+    $("entry").addEventListener("click",function(e){if(e.target===$("entry")){closeModal("entry");if(pending)cooldown(pending.jan);pending=null;}});
     document.querySelectorAll("#entry [data-adj]").forEach(function(b){
       b.addEventListener("click",function(){var q=parseInt($("entryQty").value,10)||0;q+=+b.getAttribute("data-adj");if(q<0)q=0;$("entryQty").value=q;});
     });
@@ -522,6 +528,7 @@ var __Html5QrcodeLibrary__;(()=>{var t={449:function(t,e,r){!function(t){"use st
     // unknown modal
     $("unkSave").addEventListener("click",commitUnknown);
     $("unkCancel").addEventListener("click",function(){closeModal("unknown");if(pendingUnk)cooldown(pendingUnk.jan);pendingUnk=null;});
+    $("unknown").addEventListener("click",function(e){if(e.target===$("unknown")){closeModal("unknown");if(pendingUnk)cooldown(pendingUnk.jan);pendingUnk=null;}});
     document.querySelectorAll("#unknown [data-uadj]").forEach(function(b){
       b.addEventListener("click",function(){var q=parseInt($("unkQty").value,10)||0;q+=+b.getAttribute("data-uadj");if(q<0)q=0;$("unkQty").value=q;});
     });
